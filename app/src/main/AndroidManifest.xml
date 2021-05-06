@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dicoding.moviecatalogue">
+    package="com.auttmme.moviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,11 +14,11 @@
         android:theme="@style/Theme.MovieCatalogue"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.detail.DetailTvShowActivity"
+            android:name="com.auttmme.moviecatalogue.ui.detail.DetailTvShowActivity"
             android:label="@string/title_activity_detail_tv_show"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar"></activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="com.auttmme.moviecatalogue.SplashScreenActivity"
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,15 +27,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.detail.DetailMovieActivity"
+            android:name="com.auttmme.moviecatalogue.ui.detail.DetailMovieActivity"
             android:label="@string/title_activity_detail_movie"
-            android:parentActivityName=".ui.home.HomeActivity"
+            android:parentActivityName="com.auttmme.moviecatalogue.ui.home.HomeActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.HomeActivity" />
+                android:value="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
         </activity>
-        <activity android:name=".ui.home.HomeActivity" />
+        <activity android:name="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
     </application>
 
 </manifest>
