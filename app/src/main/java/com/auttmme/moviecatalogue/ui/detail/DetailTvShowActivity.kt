@@ -1,13 +1,14 @@
 package com.auttmme.moviecatalogue.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.data.TvShowEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.databinding.ActivityDetailTvShowBinding
 import com.auttmme.moviecatalogue.databinding.ContentDetailTvShowBinding
 import com.auttmme.moviecatalogue.ui.tvshow.TvShowViewModel
@@ -38,8 +39,13 @@ class DetailTvShowActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             val tvShowId = extras.getInt(EXTRA_TV_SHOW, 0)
+
+            activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
             viewModel.setSelectedTvShow(tvShowId)
-            populateTvShow(viewModel.getTvShow())
+            viewModel.getTvShow().observe(this, { tvShow ->
+                activityDetailTvShowBinding.progressBar.visibility = View.GONE
+                populateTvShow(tvShow)
+            })
         }
     }
 

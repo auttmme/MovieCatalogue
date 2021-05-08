@@ -1,4 +1,4 @@
-package com.auttmme.moviecatalogue.data
+package com.auttmme.moviecatalogue.data.source.local.entity
 
 data class TvShowEntity (
         var tvId: Int,

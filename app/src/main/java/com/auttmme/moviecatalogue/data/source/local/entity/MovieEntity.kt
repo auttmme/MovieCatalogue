@@ -1,4 +1,4 @@
-package com.auttmme.moviecatalogue.data
+package com.auttmme.moviecatalogue.data.source.local.entity
 
 data class MovieEntity (
     var movieId: Int,

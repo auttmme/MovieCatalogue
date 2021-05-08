@@ -1,13 +1,14 @@
 package com.auttmme.moviecatalogue.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.data.MovieEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.databinding.ActivityDetailMovieBinding
 import com.auttmme.moviecatalogue.databinding.ContentDetailMovieBinding
 import com.auttmme.moviecatalogue.ui.movies.MovieViewModel
@@ -38,8 +39,13 @@ class DetailMovieActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             val movieId = extras.getInt(EXTRA_MOVIE, 0)
+
+            activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
             viewModel.setSelectedMovie(movieId)
-            populateMovie(viewModel.getMovie())
+            viewModel.getMovie().observe(this, { movie ->
+                activityDetailMovieBinding.progressBar.visibility = View.GONE
+                populateMovie(movie)
+            })
         }
     }
 

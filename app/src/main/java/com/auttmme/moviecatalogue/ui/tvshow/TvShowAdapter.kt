@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.data.TvShowEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.databinding.ItemTvshowBinding
 import com.auttmme.moviecatalogue.ui.detail.DetailTvShowActivity
 import com.bumptech.glide.Glide
@@ -15,7 +15,7 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     private var listTvShow = ArrayList<TvShowEntity>()
 
     fun setTvShow(tvShows: List<TvShowEntity>?) {
-        if (tvShows == null) return
+        if (tvShows.isNullOrEmpty()) return
         this.listTvShow.clear()
         this.listTvShow.addAll(tvShows)
     }

@@ -1,15 +1,16 @@
 package com.auttmme.moviecatalogue.data.source
 
-import com.auttmme.moviecatalogue.data.MovieEntity
-import com.auttmme.moviecatalogue.data.TvShowEntity
+import androidx.lifecycle.LiveData
+import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 
 interface MovieCatalogueDataSource {
 
-    fun getAllMovies(): List<MovieEntity>
+    fun getAllMovies(): LiveData<List<MovieEntity>>
 
-    fun getAllTvShows(): List<TvShowEntity>
+    fun getAllTvShows(): LiveData<List<TvShowEntity>>
 
-    fun getMovieById(movieId: Int): MovieEntity
+    fun getMovieById(movieId: Int): LiveData<MovieEntity>
 
-    fun getTvShowById(tvShowId: Int): TvShowEntity
+    fun getTvShowById(tvShowId: Int): LiveData<TvShowEntity>
 }

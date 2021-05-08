@@ -1,9 +1,9 @@
 package com.auttmme.moviecatalogue.ui.tvshow
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.auttmme.moviecatalogue.data.TvShowEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.data.source.MovieCatalogueRepository
-import com.auttmme.moviecatalogue.utils.DataDummy
 
 class TvShowViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
 
@@ -13,16 +13,7 @@ class TvShowViewModel(private val movieCatalogueRepository: MovieCatalogueReposi
         this.tvShowId = tvShowId
     }
 
-    fun getTvShow(): TvShowEntity {
-        lateinit var tvShow: TvShowEntity
-        val tvShowEntities = DataDummy.generateDummyTvShows()
-        for (tvShowEntity in tvShowEntities) {
-            if (tvShowEntity.tvId == tvShowId) {
-                tvShow = tvShowEntity
-            }
-        }
-        return tvShow
-    }
+    fun getTvShow(): LiveData<TvShowEntity> = movieCatalogueRepository.getTvShowById(tvShowId)
 
-    fun getAllTvShows(): List<TvShowEntity> = movieCatalogueRepository.getAllTvShows()
+    fun getAllTvShows(): LiveData<List<TvShowEntity>> = movieCatalogueRepository.getAllTvShows()
 }

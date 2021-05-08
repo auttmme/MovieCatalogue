@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.data.MovieEntity
+import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.databinding.ItemMovieBinding
 import com.auttmme.moviecatalogue.ui.detail.DetailMovieActivity
 import com.bumptech.glide.Glide
@@ -15,7 +15,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private var listMovie = ArrayList<MovieEntity>()
 
     fun setMovie(movies: List<MovieEntity>?) {
-        if (movies == null) return
+        if (movies.isNullOrEmpty()) return
         this.listMovie.clear()
         this.listMovie.addAll(movies)
     }

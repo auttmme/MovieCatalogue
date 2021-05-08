@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.ui.movies.MovieFragment
-import com.auttmme.moviecatalogue.ui.tvshow.TvshowFragment
+import com.auttmme.moviecatalogue.ui.tvshow.TvShowFragment
 
 class SectionsPageAdapter(private val mContext: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -16,16 +16,16 @@ class SectionsPageAdapter(private val mContext: Context, fm: FragmentManager) : 
         private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tvshow)
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = TAB_TITLES.size
 
     override fun getItem(position: Int): Fragment =
         when (position) {
             0 -> MovieFragment()
-            1 -> TvshowFragment()
+            1 -> TvShowFragment()
             else -> Fragment()
         }
 
-    override fun getPageTitle(position: Int): CharSequence? = mContext.resources.getString(
+    override fun getPageTitle(position: Int): CharSequence = mContext.resources.getString(
         TAB_TITLES[position])
 
 }

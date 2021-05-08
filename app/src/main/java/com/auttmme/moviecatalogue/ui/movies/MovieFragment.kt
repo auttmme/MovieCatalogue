@@ -17,7 +17,7 @@ class MovieFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         fragmentMovieBinding = FragmentMovieBinding.inflate(layoutInflater, container, false)
         return fragmentMovieBinding.root
@@ -28,10 +28,15 @@ class MovieFragment : Fragment() {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
-            val movies = viewModel.getAllMovies()
-
             val movieAdapter = MovieAdapter()
-            movieAdapter.setMovie(movies)
+
+            fragmentMovieBinding.progressBar.visibility = View.VISIBLE
+
+            viewModel.getAllMovies().observe(viewLifecycleOwner, { movies ->
+                fragmentMovieBinding.progressBar.visibility = View.GONE
+                movieAdapter.setMovie(movies)
+                movieAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentMovieBinding.rvMovie) {
                 layoutManager = LinearLayoutManager(context)

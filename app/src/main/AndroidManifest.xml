@@ -16,9 +16,14 @@
         <activity
             android:name="com.auttmme.moviecatalogue.ui.detail.DetailTvShowActivity"
             android:label="@string/title_activity_detail_tv_show"
-            android:theme="@style/Theme.MovieCatalogue.NoActionBar"></activity>
+            android:parentActivityName="com.auttmme.moviecatalogue.ui.home.HomeActivity"
+            android:theme="@style/Theme.MovieCatalogue.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
+        </activity>
         <activity
-            android:name="com.auttmme.moviecatalogue.SplashScreenActivity"
+            android:name="com.auttmme.moviecatalogue.ui.SplashScreenActivity"
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
