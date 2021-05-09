@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MovieCatalogue"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.auttmme.moviecatalogue.ui.detail.DetailTvShowActivity"
+            android:name="com.auttmme.moviecatalogue.ui.detail_tv.DetailTvShowActivity"
             android:label="@string/title_activity_detail_tv_show"
             android:parentActivityName="com.auttmme.moviecatalogue.ui.home.HomeActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">

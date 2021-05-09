@@ -1,49 +1,77 @@
 package com.auttmme.moviecatalogue.ui.tvshow
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.auttmme.moviecatalogue.R
+import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.databinding.FragmentTvshowBinding
 import com.auttmme.moviecatalogue.ui.viewmodel.ViewModelFactory
 
-class TvShowFragment : Fragment() {
+class TvShowFragment : Fragment(R.layout.fragment_tvshow) {
 
-    private lateinit var fragmentTvShowBinding: FragmentTvshowBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        fragmentTvShowBinding = FragmentTvshowBinding.inflate(layoutInflater, container, false)
-        return fragmentTvShowBinding.root
-    }
+    //it can be null when fragment destroyed. we need to re-assign it,
+    //avoid double view inflating
+    private var fragmentTvShowBinding: FragmentTvshowBinding? = null
+    private lateinit var viewModel: TvShowViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[TvShowViewModel::class.java]
-            val tvShowAdapter = TvShowAdapter()
+        fragmentTvShowBinding = FragmentTvshowBinding.bind(view)
+        setupViewModel()
+        setupRecyclerView()
+        observe()
+        fetchTvShows()
+    }
 
-            fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
+    private fun fetchTvShows(){
+        setLoading(true)
+        viewModel.fetchAllTvShows()
+    }
 
-            viewModel.getAllTvShows().observe(viewLifecycleOwner, { tvShows ->
-                fragmentTvShowBinding.progressBar.visibility = View.GONE
-                tvShowAdapter.setTvShow(tvShows)
-                tvShowAdapter.notifyDataSetChanged()
-            })
+    private fun setLoading(isShow: Boolean){
+        if(isShow){
+            fragmentTvShowBinding?.progressBar?.visibility = View.VISIBLE
+        }else{
+            fragmentTvShowBinding?.progressBar?.visibility = View.GONE
+        }
+    }
 
-            with(fragmentTvShowBinding.rvTvshow) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = tvShowAdapter
+    //it will be great if one function should do one thing only
+    //if it too big, you can separate with other function
+    private fun setupViewModel(){
+        val factory = ViewModelFactory.getInstance(requireActivity().applicationContext)
+        viewModel = ViewModelProvider(this, factory)[TvShowViewModel::class.java]
+    }
+
+    //observe should be called once, no need to call this again
+    private fun observe(){
+        viewModel.getTvShows().observe(viewLifecycleOwner, { handleTvShowsChange(it) })
+    }
+
+    private fun setupRecyclerView(){
+        fragmentTvShowBinding?.rvTvshow?.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = TvShowAdapter()
+        }
+    }
+
+    private fun handleTvShowsChange(tvShows: List<TvShowEntity>){
+        fragmentTvShowBinding?.rvTvshow?.adapter?.let { adapter ->
+            if(adapter is TvShowAdapter){
+                adapter.setTvShow(tvShows)
+                adapter.notifyDataSetChanged()
+                setLoading(false)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fragmentTvShowBinding = null
     }
 
 }

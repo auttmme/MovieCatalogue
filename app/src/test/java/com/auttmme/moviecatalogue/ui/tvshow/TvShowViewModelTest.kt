@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
-import com.auttmme.moviecatalogue.data.source.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.utils.DataDummy
 import org.junit.Test
 

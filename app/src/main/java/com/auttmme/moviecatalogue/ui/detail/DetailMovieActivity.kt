@@ -10,13 +10,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.databinding.ActivityDetailMovieBinding
-import com.auttmme.moviecatalogue.databinding.ContentDetailMovieBinding
-import com.auttmme.moviecatalogue.ui.movies.MovieViewModel
 import com.auttmme.moviecatalogue.ui.viewmodel.ViewModelFactory
 
 class DetailMovieActivity : AppCompatActivity() {
 
-    private lateinit var detailMovieBinding: ContentDetailMovieBinding
+    private lateinit var detailMovieBinding: ActivityDetailMovieBinding
+    private lateinit var viewModel : DetailMovieViewModel
 
     companion object {
         const val EXTRA_MOVIE = "extra_movie"
@@ -24,44 +23,58 @@ class DetailMovieActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val activityDetailMovieBinding = ActivityDetailMovieBinding.inflate(layoutInflater)
-        detailMovieBinding = activityDetailMovieBinding.detailMovie
-
-        setContentView(activityDetailMovieBinding.root)
-
-        setSupportActionBar(activityDetailMovieBinding.toolbar)
+        detailMovieBinding = ActivityDetailMovieBinding.inflate(layoutInflater)
+        setContentView(detailMovieBinding.root)
+        setSupportActionBar(detailMovieBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupViewModel()
+        observe()
+        fetchMovieDetail()
 
-        val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+    }
 
-        val extras = intent.extras
-        if (extras != null) {
-            val movieId = extras.getInt(EXTRA_MOVIE, 0)
+    private fun observe(){
+        viewModel.getSelectedMovie().observe(this, { populateMovie(it) })
+    }
 
-            activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
-            viewModel.setSelectedMovie(movieId)
-            viewModel.getMovie().observe(this, { movie ->
-                activityDetailMovieBinding.progressBar.visibility = View.GONE
-                populateMovie(movie)
-            })
+    private fun setLoading(isShow: Boolean){
+        if(isShow){
+            detailMovieBinding.progressBar.visibility = View.VISIBLE
+        }else{
+            detailMovieBinding.progressBar.visibility = View.GONE
         }
     }
 
-    private fun populateMovie(movieEntity: MovieEntity) {
-        detailMovieBinding.textMovieTitle.text = movieEntity.movieTitle
-        detailMovieBinding.textMovieYear.text = movieEntity.movieYear.toString()
-        detailMovieBinding.textMovieGenre.text = movieEntity.movieGenre
-        detailMovieBinding.textMovieDuration.text = movieEntity.movieDuration
-        detailMovieBinding.textMovieDesc.text = movieEntity.movieDesc
+    private fun fetchMovieDetail(){
+        val extras = intent.extras
+        if (extras != null) {
+            val movieId = extras.getInt(EXTRA_MOVIE, 0)
+            setLoading(true)
+            viewModel.fetchSelectedMovieById(movieId)
+        }
+    }
 
-        Glide.with(this)
-            .load(movieEntity.moviePoster)
-            .transform(RoundedCorners(25))
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_loading)
-                    .error(R.drawable.ic_error))
-            .into(detailMovieBinding.imageMoviePoster)
+    private fun setupViewModel(){
+        val factory = ViewModelFactory.getInstance(applicationContext)
+        viewModel = ViewModelProvider(this, factory)[DetailMovieViewModel::class.java]
+    }
+
+    private fun populateMovie(movieEntity: MovieEntity) {
+        setLoading(false)
+        with(detailMovieBinding.detailMovie){
+            textMovieTitle.text = movieEntity.movieTitle
+            textMovieYear.text = movieEntity.movieYear.toString()
+            textMovieGenre.text = movieEntity.movieGenre
+            textMovieDuration.text = movieEntity.movieDuration
+            textMovieDesc.text = movieEntity.movieDesc
+
+            Glide.with(this@DetailMovieActivity)
+                .load(movieEntity.moviePoster)
+                .transform(RoundedCorners(25))
+                .apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error))
+                .into(imageMoviePoster)
+        }
     }
 }

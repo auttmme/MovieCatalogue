@@ -6,10 +6,8 @@ import com.auttmme.moviecatalogue.data.source.remote.RemoteDataSource
 import com.auttmme.moviecatalogue.utils.JsonHelper
 
 object Injection {
-    fun provideRepository(context: Context): MovieCatalogueRepository {
-
+    fun provideRepo(context: Context) : MovieCatalogueRepository {
         val remoteDataSource = RemoteDataSource.getInstance(JsonHelper(context))
-
-        return MovieCatalogueRepository.getInstance(remoteDataSource)
+        return MovieCatalogueRepository(remoteDataSource)
     }
 }

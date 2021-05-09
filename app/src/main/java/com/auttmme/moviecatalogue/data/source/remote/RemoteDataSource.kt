@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.auttmme.moviecatalogue.data.source.remote.response.MovieResponse
 import com.auttmme.moviecatalogue.data.source.remote.response.TvShowResponse
-import com.auttmme.moviecatalogue.utils.EspressoIdlingResource
+//import com.auttmme.moviecatalogue.utils.EspressoIdlingResource
 import com.auttmme.moviecatalogue.utils.JsonHelper
 
 class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
@@ -25,18 +25,18 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
     }
 
     fun getMovie(callback: LoadMoviesCallback) {
-        EspressoIdlingResource.increment()
+//        EspressoIdlingResource.increment()
         handler.postDelayed({
           callback.onMoviesReceived(jsonHelper.loadMovies())
-          EspressoIdlingResource.decrement()
+//          EspressoIdlingResource.decrement()
                           }, SERVICE_LATENCY_IN_MILLIS)
     }
 
     fun getTvShow(callback: LoadTvShowsCallback) {
-        EspressoIdlingResource.increment()
+//        EspressoIdlingResource.increment()
         handler.postDelayed({
             callback.onTvShowsReceived(jsonHelper.loadTvShows())
-            EspressoIdlingResource.decrement()
+//            EspressoIdlingResource.decrement()
                             }, SERVICE_LATENCY_IN_MILLIS)
     }
 
