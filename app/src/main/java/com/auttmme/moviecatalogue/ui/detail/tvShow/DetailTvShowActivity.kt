@@ -1,22 +1,25 @@
-package com.auttmme.moviecatalogue.ui.detail
+package com.auttmme.moviecatalogue.ui.detail.tvShow
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.databinding.ActivityDetailTvShowBinding
 import com.auttmme.moviecatalogue.databinding.ContentDetailTvShowBinding
-import com.auttmme.moviecatalogue.ui.tvshow.TvShowViewModel
 import com.auttmme.moviecatalogue.ui.viewmodel.ViewModelFactory
+import com.auttmme.moviecatalogue.vo.Status
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 
 class DetailTvShowActivity : AppCompatActivity() {
 
+    private lateinit var activityDetailTvShowBinding: ActivityDetailTvShowBinding
     private lateinit var detailTvShowBinding: ContentDetailTvShowBinding
+    private lateinit var viewModel: DetailTvShowViewModel
 
     companion object {
         const val EXTRA_TV_SHOW = "extra_tv_show"
@@ -25,7 +28,7 @@ class DetailTvShowActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val activityDetailTvShowBinding = ActivityDetailTvShowBinding.inflate(layoutInflater)
+        activityDetailTvShowBinding = ActivityDetailTvShowBinding.inflate(layoutInflater)
         detailTvShowBinding = activityDetailTvShowBinding.detailTvShow
 
         setContentView(activityDetailTvShowBinding.root)
@@ -34,17 +37,27 @@ class DetailTvShowActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[TvShowViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[DetailTvShowViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
             val tvShowId = extras.getInt(EXTRA_TV_SHOW, 0)
-
-            activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
             viewModel.setSelectedTvShow(tvShowId)
-            viewModel.getTvShow().observe(this, { tvShow ->
-                activityDetailTvShowBinding.progressBar.visibility = View.GONE
-                populateTvShow(tvShow)
+
+            viewModel.getTvShow.observe(this, { tvShow ->
+                if (tvShow != null) {
+                    when(tvShow.status) {
+                        Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
+                        Status.SUCCESS -> if (tvShow.data != null) {
+                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
+                            populateTvShow(tvShow.data)
+                        }
+                        Status.ERROR -> {
+                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
+                            Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             })
         }
     }

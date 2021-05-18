@@ -2,17 +2,19 @@ package com.auttmme.moviecatalogue.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.auttmme.moviecatalogue.data.MovieCatalogueDataSource
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.data.source.remote.RemoteDataSource
 import com.auttmme.moviecatalogue.data.source.remote.response.MovieResponse
 import com.auttmme.moviecatalogue.data.source.remote.response.TvShowResponse
 
-class FakeAcademyRepository (private val remoteDataSource: RemoteDataSource) : MovieCatalogueDataSource {
+class FakeMovieRepository (private val remoteDataSource: RemoteDataSource) :
+    MovieCatalogueDataSource {
 
     override fun getAllMovies(): LiveData<List<MovieEntity>> {
         val movieResults = MutableLiveData<List<MovieEntity>>()
-        remoteDataSource.getMovie(object : RemoteDataSource.LoadMoviesCallback {
+        remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
             override fun onMoviesReceived(movieResponse: List<MovieResponse>) {
                 val movieList = ArrayList<MovieEntity>()
                 for (response in movieResponse) {
@@ -36,7 +38,7 @@ class FakeAcademyRepository (private val remoteDataSource: RemoteDataSource) : M
     override fun getMovieById(movieId: Int): LiveData<MovieEntity> {
         val movieResult = MutableLiveData<MovieEntity>()
 //        val movieResponses = remoteDataSource.getMovie()
-        remoteDataSource.getMovie(object : RemoteDataSource.LoadMoviesCallback {
+        remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
             override fun onMoviesReceived(movieResponse: List<MovieResponse>) {
                 lateinit var movie: MovieEntity
                 for (response in movieResponse) {
@@ -60,7 +62,7 @@ class FakeAcademyRepository (private val remoteDataSource: RemoteDataSource) : M
     override fun getAllTvShows(): LiveData<List<TvShowEntity>> {
         val tvShowResults = MutableLiveData<List<TvShowEntity>>()
 //        val tvShowResponses = remoteDataSource.getTvShow()
-        remoteDataSource.getTvShow(object : RemoteDataSource.LoadTvShowsCallback {
+        remoteDataSource.getAllTvShows(object : RemoteDataSource.LoadTvShowsCallback {
             override fun onTvShowsReceived(tvShowResponse: List<TvShowResponse>) {
                 val tvList = ArrayList<TvShowEntity>()
                 for (response in tvShowResponse) {
@@ -84,7 +86,7 @@ class FakeAcademyRepository (private val remoteDataSource: RemoteDataSource) : M
     override fun getTvShowById(tvShowId: Int): LiveData<TvShowEntity> {
         val tvShowResult = MutableLiveData<TvShowEntity>()
 //        val tvShowResponses = remoteDataSource.getTvShow()
-        remoteDataSource.getTvShow(object : RemoteDataSource.LoadTvShowsCallback {
+        remoteDataSource.getAllTvShows(object : RemoteDataSource.LoadTvShowsCallback {
             override fun onTvShowsReceived(tvShowResponse: List<TvShowResponse>) {
                 lateinit var tvShow: TvShowEntity
                 for (response in tvShowResponse) {

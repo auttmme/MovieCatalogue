@@ -14,16 +14,21 @@
         android:theme="@style/Theme.MovieCatalogue"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.auttmme.moviecatalogue.ui.detail.DetailTvShowActivity"
+            android:name=".ui.home.MainActivity"
+            android:label="@string/title_activity_main">
+
+        </activity>
+        <activity
+            android:name=".ui.detail.tvShow.DetailTvShowActivity"
             android:label="@string/title_activity_detail_tv_show"
-            android:parentActivityName="com.auttmme.moviecatalogue.ui.home.HomeActivity"
+            android:parentActivityName=".ui.home.MainActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
+                android:value="com.auttmme.moviecatalogue.ui.home.MainActivity" />
         </activity>
         <activity
-            android:name="com.auttmme.moviecatalogue.ui.SplashScreenActivity"
+            android:name=".ui.SplashScreenActivity"
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,15 +37,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.auttmme.moviecatalogue.ui.detail.DetailMovieActivity"
+            android:name=".ui.detail.movie.DetailMovieActivity"
             android:label="@string/title_activity_detail_movie"
-            android:parentActivityName="com.auttmme.moviecatalogue.ui.home.HomeActivity"
+            android:parentActivityName=".ui.home.MainActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
+                android:value="com.auttmme.moviecatalogue.ui.home.MainActivity" />
         </activity>
-        <activity android:name="com.auttmme.moviecatalogue.ui.home.HomeActivity" />
+        <activity android:name=".ui.home.HomeActivity" />
     </application>
 
 </manifest>
