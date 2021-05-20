@@ -3,9 +3,9 @@ package com.auttmme.moviecatalogue.ui.movies
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.auttmme.moviecatalogue.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
-import com.auttmme.moviecatalogue.utils.DataDummy
 import com.auttmme.moviecatalogue.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -30,7 +30,10 @@ class MovieViewModelTest {
     private lateinit var movieCatalogueRepository: MovieCatalogueRepository
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<MovieEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -39,8 +42,9 @@ class MovieViewModelTest {
 
     @Test
     fun getAllMovies() {
-        val dummyMovies = Resource.success(DataDummy.generateDummyMovies())
-        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(14)
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieCatalogueRepository.getAllMovies()).thenReturn(movies)

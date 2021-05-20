@@ -30,6 +30,7 @@ class MovieFragment : Fragment() {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+
             val movieAdapter = MovieAdapter()
             viewModel.getAllMovies().observe(viewLifecycleOwner, { movies ->
                 if (movies != null) {
@@ -37,8 +38,7 @@ class MovieFragment : Fragment() {
                         Status.LOADING -> fragmentMovieBinding.progressBar.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             fragmentMovieBinding.progressBar.visibility = View.GONE
-                            movieAdapter.setMovie(movies.data)
-                            movieAdapter.notifyDataSetChanged()
+                            movieAdapter.submitList(movies.data)
                         }
                         Status.ERROR -> {
                             fragmentMovieBinding.progressBar.visibility = View.GONE
