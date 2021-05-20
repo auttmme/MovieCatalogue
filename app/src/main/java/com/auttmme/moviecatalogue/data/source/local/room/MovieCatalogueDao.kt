@@ -10,7 +10,7 @@ interface MovieCatalogueDao {
     @Query("SELECT * FROM movieentities")
     fun getMovies(): LiveData<List<MovieEntity>>
 
-    @Query("SELECT * FROM movieentities where movieLiked = 1")
+    @Query("SELECT * FROM movieentities where movieFavorited = 1")
     fun getFavoriteMovie(): LiveData<List<MovieEntity>>
 
     @Transaction
@@ -26,7 +26,7 @@ interface MovieCatalogueDao {
     @Query("SELECT * FROM tventities")
     fun getTvShows(): LiveData<List<TvShowEntity>>
 
-    @Query("SELECT * FROM tventities where tvLiked = 1")
+    @Query("SELECT * FROM tventities where tvFavorited = 1")
     fun getFavoriteTvShow(): LiveData<List<TvShowEntity>>
 
     @Transaction

@@ -18,4 +18,13 @@ class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogue
     var getTvShow: LiveData<Resource<TvShowEntity>> = Transformations.switchMap(tvShowId) { mDetailTvId ->
         movieCatalogueRepository.getTvShowById(mDetailTvId)
     }
+
+    fun setFavorite() {
+        val tvShowResource = getTvShow.value
+        if (tvShowResource != null) {
+            val tvShowDetail = tvShowResource.data
+            val newState = !tvShowDetail?.tvFavorited!!
+            movieCatalogueRepository.setTvShowFavorite(tvShowDetail, newState)
+        }
+    }
 }

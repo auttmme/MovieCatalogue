@@ -1,4 +1,4 @@
-package com.auttmme.moviecatalogue.ui.home
+package com.auttmme.moviecatalogue.ui.favorite
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -20,8 +20,8 @@ class SectionsPageAdapter(private val mContext: Context, fm: FragmentManager) : 
 
     override fun getItem(position: Int): Fragment =
         when (position) {
-            0 -> MovieFragment()
-            1 -> TvShowFragment()
+            0 -> FavoriteMovieFragment()
+            1 -> FavoriteTvShowFragment()
             else -> Fragment()
         }
 

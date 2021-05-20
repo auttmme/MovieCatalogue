@@ -1,9 +1,12 @@
 package com.auttmme.moviecatalogue.ui.detail.tvShow
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
@@ -20,6 +23,8 @@ class DetailTvShowActivity : AppCompatActivity() {
     private lateinit var activityDetailTvShowBinding: ActivityDetailTvShowBinding
     private lateinit var detailTvShowBinding: ContentDetailTvShowBinding
     private lateinit var viewModel: DetailTvShowViewModel
+
+    private var menu: Menu? = null
 
     companion object {
         const val EXTRA_TV_SHOW = "extra_tv_show"
@@ -44,13 +49,13 @@ class DetailTvShowActivity : AppCompatActivity() {
             val tvShowId = extras.getInt(EXTRA_TV_SHOW, 0)
             viewModel.setSelectedTvShow(tvShowId)
 
-            viewModel.getTvShow.observe(this, { tvShow ->
-                if (tvShow != null) {
-                    when(tvShow.status) {
+            viewModel.getTvShow.observe(this, { tvShowResource ->
+                if (tvShowResource != null) {
+                    when(tvShowResource.status) {
                         Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> if (tvShow.data != null) {
+                        Status.SUCCESS -> if (tvShowResource.data != null) {
                             activityDetailTvShowBinding.progressBar.visibility = View.GONE
-                            populateTvShow(tvShow.data)
+                            populateTvShow(tvShowResource.data)
                         }
                         Status.ERROR -> {
                             activityDetailTvShowBinding.progressBar.visibility = View.GONE
@@ -77,5 +82,41 @@ class DetailTvShowActivity : AppCompatActivity() {
                 RequestOptions.placeholderOf(R.drawable.ic_loading)
                     .error(R.drawable.ic_error))
             .into(detailTvShowBinding.imageTvPoster)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_detail, menu)
+        this.menu = menu
+        viewModel.getTvShow.observe(this, { tvShow ->
+            if (tvShow != null) {
+                when (tvShow.status) {
+                    Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
+                    Status.SUCCESS -> if (tvShow.data != null) {
+                        activityDetailTvShowBinding.progressBar.visibility = View.GONE
+                        val state = tvShow.data.tvFavorited
+                        setFavoriteState(state)
+                    }
+                }
+            }
+        })
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_favorite) {
+            viewModel.setFavorite()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setFavoriteState(state: Boolean) {
+        if (menu == null) return
+        val menuItem = menu?.findItem(R.id.action_favorite)
+        if (state) {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_full_white)
+        } else {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24)
+        }
     }
 }

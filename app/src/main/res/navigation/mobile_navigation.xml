@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_movie">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.auttmme.moviecatalogue.ui.home.ui.movie.MovieFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_movie"
+        android:name="com.auttmme.moviecatalogue.ui.movies.MovieFragment"
+        android:label="@string/movie"
+        tools:layout="@layout/fragment_movie" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.auttmme.moviecatalogue.ui.home.ui.tvshow.TvShowFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_tvShow"
+        android:name="com.auttmme.moviecatalogue.ui.tvshow.TvShowFragment"
+        android:label="@string/tvshow"
+        tools:layout="@layout/fragment_tvshow" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.auttmme.moviecatalogue.ui.home.ui.favorite.FavoriteFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_favorite"
+        android:name="com.auttmme.moviecatalogue.ui.favorite.FavoriteFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>

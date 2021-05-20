@@ -33,6 +33,6 @@ data class TvShowEntity (
         @ColumnInfo(name = "tvGenre")
         var tvGenre: String?,
 
-        @ColumnInfo(name = "tvLiked")
+        @ColumnInfo(name = "tvFavorited")
         var tvFavorited: Boolean = false
         )

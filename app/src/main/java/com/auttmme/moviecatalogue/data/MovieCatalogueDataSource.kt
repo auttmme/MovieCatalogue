@@ -18,4 +18,8 @@ interface MovieCatalogueDataSource {
     fun getFavoriteMovies(): LiveData<List<MovieEntity>>
 
     fun getFavoriteTvShow(): LiveData<List<TvShowEntity>>
+
+    fun setMovieFavorite(movie: MovieEntity, state: Boolean)
+
+    fun setTvShowFavorite(tvShow: TvShowEntity, state: Boolean)
 }

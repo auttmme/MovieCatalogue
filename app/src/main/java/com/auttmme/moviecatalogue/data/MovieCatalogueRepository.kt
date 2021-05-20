@@ -1,7 +1,6 @@
 package com.auttmme.moviecatalogue.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.auttmme.moviecatalogue.data.source.local.LocalDataSource
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.data.source.local.entity.TvShowEntity
@@ -121,16 +120,16 @@ class MovieCatalogueRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getTvShowById(tvId: Int): LiveData<Resource<TvShowEntity>> {
+    override fun getTvShowById(tvShowId: Int): LiveData<Resource<TvShowEntity>> {
         return object : NetworkBoundResource<TvShowEntity, List<TvShowResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<TvShowEntity> =
-                localDataSource.getTvShowById(tvId)
+                localDataSource.getTvShowById(tvShowId)
 
             override fun shouldFetch(data: TvShowEntity?): Boolean =
                 data == null
 
             override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> =
-                remoteDataSource.getTvShowById(tvId)
+                remoteDataSource.getTvShowById(tvShowId)
 
             override fun saveCallResult(data: List<TvShowResponse>) {
                 val tvList = ArrayList<TvShowEntity>()
@@ -158,4 +157,11 @@ class MovieCatalogueRepository private constructor(
 
     override fun getFavoriteTvShow(): LiveData<List<TvShowEntity>> =
         localDataSource.getFavoriteTvShows()
+
+    override fun setMovieFavorite(movie: MovieEntity, state: Boolean) =
+        appExecutors.diskIO().execute { localDataSource.setMovieFavorite(movie, state) }
+
+    override fun setTvShowFavorite(tvShow: TvShowEntity, state: Boolean) {
+        appExecutors.diskIO().execute { localDataSource.setTvShowFavorite(tvShow, state) }
+    }
 }

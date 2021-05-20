@@ -1,9 +1,12 @@
 package com.auttmme.moviecatalogue.ui.detail.movie
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
@@ -20,6 +23,8 @@ class DetailMovieActivity : AppCompatActivity() {
     private lateinit var activityDetailMovieBinding: ActivityDetailMovieBinding
     private lateinit var detailMovieBinding: ContentDetailMovieBinding
     private lateinit var viewModel: DetailMovieViewModel
+
+    private var menu: Menu? = null
 
     companion object {
         const val EXTRA_MOVIE = "extra_movie"
@@ -45,13 +50,13 @@ class DetailMovieActivity : AppCompatActivity() {
             viewModel.setSelectedMovie(movieId)
 
 
-            viewModel.getMovie.observe(this, { movie ->
-                if (movie != null) {
-                    when (movie.status) {
+            viewModel.getMovie.observe(this, { movieResource ->
+                if (movieResource != null) {
+                    when (movieResource.status) {
                         Status.LOADING -> activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> if (movie.data != null) {
+                        Status.SUCCESS -> if (movieResource.data != null) {
                             activityDetailMovieBinding.progressBar.visibility = View.GONE
-                            populateMovie(movie.data)
+                            populateMovie(movieResource.data)
                         }
                         Status.ERROR -> {
                             activityDetailMovieBinding.progressBar.visibility = View.GONE
@@ -77,5 +82,41 @@ class DetailMovieActivity : AppCompatActivity() {
                 RequestOptions.placeholderOf(R.drawable.ic_loading)
                     .error(R.drawable.ic_error))
             .into(detailMovieBinding.imageMoviePoster)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_detail, menu)
+        this.menu = menu
+        viewModel.getMovie.observe(this, { movie ->
+            if (movie != null) {
+                when (movie.status) {
+                    Status.LOADING -> activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
+                    Status.SUCCESS -> if (movie.data != null) {
+                        activityDetailMovieBinding.progressBar.visibility = View.GONE
+                        val state = movie.data.movieFavorited
+                        setFavoriteState(state)
+                    }
+                }
+            }
+        })
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_favorite) {
+            viewModel.setFavorite()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setFavoriteState(state: Boolean) {
+        if (menu == null) return
+        val menuItem = menu?.findItem(R.id.action_favorite)
+        if (state) {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_full_white)
+        } else {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_favorite_border_24)
+        }
     }
 }

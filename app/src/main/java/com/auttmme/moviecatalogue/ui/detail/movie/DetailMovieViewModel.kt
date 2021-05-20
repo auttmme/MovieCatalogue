@@ -18,4 +18,13 @@ class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueR
     var getMovie: LiveData<Resource<MovieEntity>> = Transformations.switchMap(movieId) { mDetailMovieId ->
         movieCatalogueRepository.getMovieById(mDetailMovieId)
     }
+
+    fun setFavorite() {
+        val movieResource = getMovie.value
+        if (movieResource != null) {
+            val movieDetail = movieResource.data
+            val newState = !movieDetail?.movieFavorited!!
+            movieCatalogueRepository.setMovieFavorite(movieDetail, newState)
+        }
+    }
 }

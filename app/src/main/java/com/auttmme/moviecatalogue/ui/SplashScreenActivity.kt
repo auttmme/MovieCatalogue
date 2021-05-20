@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.ui.home.HomeActivity
-import com.auttmme.moviecatalogue.ui.home.MainActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 

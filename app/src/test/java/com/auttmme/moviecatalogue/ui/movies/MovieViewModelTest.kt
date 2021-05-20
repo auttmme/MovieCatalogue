@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.auttmme.moviecatalogue.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.utils.DataDummy
+import com.auttmme.moviecatalogue.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -29,7 +30,7 @@ class MovieViewModelTest {
     private lateinit var movieCatalogueRepository: MovieCatalogueRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
+    private lateinit var observer: Observer<Resource<List<MovieEntity>>>
 
     @Before
     fun setUp() {
@@ -38,12 +39,12 @@ class MovieViewModelTest {
 
     @Test
     fun getAllMovies() {
-        val dummyMovies = DataDummy.generateDummyMovies()
-        val movies = MutableLiveData<List<MovieEntity>>()
+        val dummyMovies = Resource.success(DataDummy.generateDummyMovies())
+        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieCatalogueRepository.getAllMovies()).thenReturn(movies)
-        val movieEntities = viewModel.getAllMovies().value
+        val movieEntities = viewModel.getAllMovies().value?.data
         verify(movieCatalogueRepository).getAllMovies()
         assertNotNull(movieEntities)
         assertEquals(14, movieEntities?.size)

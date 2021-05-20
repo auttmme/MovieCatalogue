@@ -7,6 +7,7 @@ import com.auttmme.moviecatalogue.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.ui.detail.movie.DetailMovieViewModel
 import com.auttmme.moviecatalogue.ui.detail.tvShow.DetailTvShowViewModel
 import com.auttmme.moviecatalogue.ui.di.Injection
+import com.auttmme.moviecatalogue.ui.favorite.FavoriteViewModel
 import com.auttmme.moviecatalogue.ui.movies.MovieViewModel
 import com.auttmme.moviecatalogue.ui.tvshow.TvShowViewModel
 
@@ -36,6 +37,9 @@ class ViewModelFactory private constructor(private val mMovieCatalogueRepository
             }
             modelClass.isAssignableFrom(DetailTvShowViewModel::class.java) -> {
                 return DetailTvShowViewModel(mMovieCatalogueRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
+                return FavoriteViewModel(mMovieCatalogueRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
