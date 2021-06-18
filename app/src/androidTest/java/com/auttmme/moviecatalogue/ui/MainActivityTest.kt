@@ -36,7 +36,7 @@ class MainActivityTest {
     @Test
     fun loadMovie() {
         onView(withId(R.id.rv_movie))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie))
             .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovie.size))
     }
@@ -59,7 +59,7 @@ class MainActivityTest {
     @Test
     fun loadTvShow() {
         onView(withId(R.id.navigation_tvShow)).perform(click())
-        onView(withId(R.id.rv_tvshow)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTvShow.size))
     }
 
