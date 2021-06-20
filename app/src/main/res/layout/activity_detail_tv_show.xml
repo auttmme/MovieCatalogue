@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/navy"
-    tools:context=".ui.detail.tvShow.DetailTvShowActivity">
+    tools:context="com.auttmme.moviecatalogue.core.ui.detail.tvShow.DetailTvShowActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

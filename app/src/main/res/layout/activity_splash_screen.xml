@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_yellow"
-    tools:context=".ui.SplashScreenActivity">
+    tools:context="com.auttmme.moviecatalogue.core.ui.SplashScreenActivity">
 
     <ImageView
         android:layout_width="200dp"

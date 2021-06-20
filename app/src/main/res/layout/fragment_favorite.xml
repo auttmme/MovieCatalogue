@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.favorite.FavoriteFragment">
+    tools:context="com.auttmme.moviecatalogue.core.ui.favorite.FavoriteFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"

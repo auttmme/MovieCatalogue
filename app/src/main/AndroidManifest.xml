@@ -14,21 +14,21 @@
         android:theme="@style/Theme.MovieCatalogue"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.auttmme.moviecatalogue.core.ui.MainActivity"
             android:label="@string/title_activity_main">
 
         </activity>
         <activity
-            android:name=".ui.detail.tvShow.DetailTvShowActivity"
+            android:name="com.auttmme.moviecatalogue.core.ui.detail.tvShow.DetailTvShowActivity"
             android:label="@string/title_activity_detail_tv_show"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName="com.auttmme.moviecatalogue.core.ui.MainActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.auttmme.moviecatalogue.ui.MainActivity" />
+                android:value="com.auttmme.moviecatalogue.core.ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name="com.auttmme.moviecatalogue.core.ui.SplashScreenActivity"
             android:theme="@style/Theme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,13 +37,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.detail.movie.DetailMovieActivity"
+            android:name="com.auttmme.moviecatalogue.core.ui.detail.movie.DetailMovieActivity"
             android:label="@string/title_activity_detail_movie"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName="com.auttmme.moviecatalogue.core.ui.MainActivity"
             android:theme="@style/Theme.MovieCatalogue.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.auttmme.moviecatalogue.ui.MainActivity" />
+                android:value="com.auttmme.moviecatalogue.core.ui.MainActivity" />
         </activity>
     </application>
 
