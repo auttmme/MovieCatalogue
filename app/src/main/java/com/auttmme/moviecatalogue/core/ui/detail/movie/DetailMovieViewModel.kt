@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.domain.model.Movie
-import com.auttmme.moviecatalogue.core.vo.Resource
+import com.auttmme.moviecatalogue.core.data.Resource
 
 class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
     val movieId = MutableLiveData<Int>()

@@ -14,7 +14,8 @@ import com.auttmme.moviecatalogue.core.data.source.remote.response.TvShowRespons
 import com.auttmme.moviecatalogue.core.domain.model.Movie
 import com.auttmme.moviecatalogue.core.utils.AppExecutors
 import com.auttmme.moviecatalogue.core.utils.DataMapper
-import com.auttmme.moviecatalogue.core.vo.Resource
+import com.auttmme.moviecatalogue.core.data.Resource
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
 class MovieCatalogueRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -47,19 +48,19 @@ class MovieCatalogueRepository private constructor(
                 remoteDataSource.getAllMovies()
 
             override fun saveCallResult(data: List<MovieResponse>) {
-                val movieList = ArrayList<MovieEntity>()
-                for (response in data) {
-                    val movie = MovieEntity(response.movieId,
-                            response.movieTitle,
-                            response.movieDesc,
-                            response.movieYear,
-                            response.moviePoster,
-                            response.movieGenre,
-                            response.movieDuration,
-                            false)
-
-                    movieList.add(movie)
-                }
+                val movieList = DataMapper.mapMovieResponseToEntities(data)
+//                for (response in data) {
+//                    val movie = MovieEntity(response.movieId,
+//                            response.movieTitle,
+//                            response.movieDesc,
+//                            response.movieYear,
+//                            response.moviePoster,
+//                            response.movieGenre,
+//                            response.movieDuration,
+//                            false)
+//
+//                    movieList.add(movie)
+//                }
                 localDataSource.insertMovies(movieList)
             }
         }.asLiveData()
@@ -96,49 +97,46 @@ class MovieCatalogueRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getAllTvShows(): LiveData<Resource<PagedList<TvShowEntity>>> {
-        return object : NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
-                    .build()
-                return LivePagedListBuilder(localDataSource.getAllTvShows(), config).build()
+    override fun getAllTvShows(): LiveData<Resource<List<TvShow>>> {
+        return object : NetworkBoundResource<List<TvShow>, List<TvShowResponse>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<TvShow>> {
+                return Transformations.map(localDataSource.getAllTvShows()) {
+                    DataMapper.mapTvEntitiesToDomain(it)
+                }
             }
 
-            override fun shouldFetch(data: PagedList<TvShowEntity>?): Boolean =
+            override fun shouldFetch(data: List<TvShow>?): Boolean =
                 data == null || data.isEmpty()
 
             override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> =
                 remoteDataSource.getAllTvShows()
 
             override fun saveCallResult(data: List<TvShowResponse>) {
-                val tvList = ArrayList<TvShowEntity>()
-                for (response in data) {
-                    val tvShow = TvShowEntity(response.tvId,
-                        response.tvTitle,
-                        response.tvDesc,
-                        response.tvYear,
-                        response.tvPoster,
-                        response.tvSeason,
-                        response.tvEpisode,
-                        response.tvGenre,
-                        false)
-
-                    tvList.add(tvShow)
-                }
+                val tvList = DataMapper.mapTvResponseToEntities(data)
+//                for (response in data) {
+//                    val tvShow = TvShowEntity(response.tvId,
+//                        response.tvTitle,
+//                        response.tvDesc,
+//                        response.tvYear,
+//                        response.tvPoster,
+//                        response.tvSeason,
+//                        response.tvEpisode,
+//                        response.tvGenre,
+//                        false)
+//
+//                    tvList.add(tvShow)
+//                }
                 localDataSource.insertTvShows(tvList)
             }
         }.asLiveData()
     }
 
-    override fun getTvShowById(tvShowId: Int): LiveData<Resource<TvShowEntity>> {
-        return object : NetworkBoundResource<TvShowEntity, List<TvShowResponse>>(appExecutors) {
-            override fun loadFromDB(): LiveData<TvShowEntity> =
+    override fun getTvShowById(tvShowId: Int): LiveData<Resource<TvShow>> {
+        return object : NetworkBoundResource<TvShow, List<TvShowResponse>>(appExecutors) {
+            override fun loadFromDB(): LiveData<TvShow> =
                 localDataSource.getTvShowById(tvShowId)
 
-            override fun shouldFetch(data: TvShowEntity?): Boolean =
+            override fun shouldFetch(data: TvShow?): Boolean =
                 data == null
 
             override fun createCall(): LiveData<ApiResponse<List<TvShowResponse>>> =
@@ -171,14 +169,10 @@ class MovieCatalogueRepository private constructor(
         }
     }
 
-    override fun getFavoriteTvShow(): LiveData<PagedList<TvShowEntity>> {
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
-            .build()
-
-        return LivePagedListBuilder(localDataSource.getFavoriteTvShows(), config).build()
+    override fun getFavoriteTvShow(): LiveData<List<TvShow>> {
+        return Transformations.map(localDataSource.getFavoriteTvShows()) {
+            DataMapper.mapTvEntitiesToDomain(it)
+        }
     }
 
     override fun setMovieFavorite(movie: Movie, state: Boolean) {
@@ -187,7 +181,8 @@ class MovieCatalogueRepository private constructor(
     }
 
 
-    override fun setTvShowFavorite(tvShow: TvShowEntity, state: Boolean) {
-        appExecutors.diskIO().execute { localDataSource.setTvShowFavorite(tvShow, state) }
+    override fun setTvShowFavorite(tvShow: TvShow, state: Boolean) {
+        val tvEntity = DataMapper.mapTvDomainToEntity(tvShow)
+        appExecutors.diskIO().execute { localDataSource.setTvShowFavorite(tvEntity, state) }
     }
 }

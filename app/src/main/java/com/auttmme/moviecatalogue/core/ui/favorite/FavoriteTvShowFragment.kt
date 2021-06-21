@@ -34,7 +34,7 @@ class FavoriteTvShowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        itemTouchHelper.attachToRecyclerView(binding?.rvTvshow)
+//        itemTouchHelper.attachToRecyclerView(binding?.rvTvshow)
 
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireContext())
@@ -44,7 +44,7 @@ class FavoriteTvShowFragment : Fragment() {
             binding?.progressBar?.visibility = View.VISIBLE
             viewModel.getTvShowFavorite().observe(viewLifecycleOwner, { tvShows ->
                 binding?.progressBar?.visibility = View.GONE
-                adapter.submitList(tvShows)
+                adapter.setTvShow(tvShows)
                 adapter.notifyDataSetChanged()
             })
 
@@ -54,22 +54,22 @@ class FavoriteTvShowFragment : Fragment() {
         }
     }
 
-    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int =
-            makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = true
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            if (view != null) {
-                val swipedPosition = viewHolder.bindingAdapterPosition
-                val tvShowEntity = adapter.getSwipedData(swipedPosition)
-                tvShowEntity?.let { viewModel.setTvShowFavorite(it) }
-
-                val snackbar = Snackbar.make(view as View, R.string.message_undo, Snackbar.LENGTH_LONG)
-                snackbar.setAction(R.string.message_ok) { v ->
-                    tvShowEntity?.let { viewModel.setTvShowFavorite(it) }
-                }
-                snackbar.show()
-            }
-        }
-    })
+//    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+//        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int =
+//            makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+//        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = true
+//        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//            if (view != null) {
+//                val swipedPosition = viewHolder.bindingAdapterPosition
+//                val tvShowEntity = adapter.getSwipedData(swipedPosition)
+//                tvShowEntity?.let { viewModel.setTvShowFavorite(it) }
+//
+//                val snackbar = Snackbar.make(view as View, R.string.message_undo, Snackbar.LENGTH_LONG)
+//                snackbar.setAction(R.string.message_ok) { v ->
+//                    tvShowEntity?.let { viewModel.setTvShowFavorite(it) }
+//                }
+//                snackbar.show()
+//            }
+//        }
+//    })
 }

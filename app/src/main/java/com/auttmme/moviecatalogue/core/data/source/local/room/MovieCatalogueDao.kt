@@ -6,6 +6,7 @@ import androidx.room.*
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.core.domain.model.Movie
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
 @Dao
 interface MovieCatalogueDao {
@@ -26,14 +27,14 @@ interface MovieCatalogueDao {
     fun updateMovie(movie: MovieEntity)
 
     @Query("SELECT * FROM tventities")
-    fun getTvShows(): DataSource.Factory<Int, TvShowEntity>
+    fun getTvShows(): LiveData<List<TvShowEntity>>
 
     @Query("SELECT * FROM tventities where tvFavorited = 1")
-    fun getFavoriteTvShow(): DataSource.Factory<Int, TvShowEntity>
+    fun getFavoriteTvShow(): LiveData<List<TvShowEntity>>
 
     @Transaction
     @Query("SELECT * FROM tventities WHERE tvId = :tvId")
-    fun getTvShowById(tvId: Int): LiveData<TvShowEntity>
+    fun getTvShowById(tvId: Int): LiveData<TvShow>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTvShows(tvShows: List<TvShowEntity>)

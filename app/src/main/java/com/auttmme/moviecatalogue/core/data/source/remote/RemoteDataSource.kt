@@ -31,7 +31,7 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         EspressoIdlingResource.increment()
         val resultMovie = MutableLiveData<ApiResponse<List<MovieResponse>>>()
         handler.postDelayed({
-          resultMovie.value = ApiResponse.success(jsonHelper.loadMovies())
+          resultMovie.value = ApiResponse.Success(jsonHelper.loadMovies())
           EspressoIdlingResource.decrement()
                           }, SERVICE_LATENCY_IN_MILLIS)
         return resultMovie
@@ -41,7 +41,7 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         EspressoIdlingResource.increment()
         val resultMovieById = MutableLiveData<ApiResponse<List<MovieResponse>>>()
         handler.postDelayed({
-            resultMovieById.value = ApiResponse.success(jsonHelper.loadMovieById(movieId))
+            resultMovieById.value = ApiResponse.Success(jsonHelper.loadMovieById(movieId))
             EspressoIdlingResource.decrement()
         }, SERVICE_LATENCY_IN_MILLIS)
         return resultMovieById
@@ -51,7 +51,7 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         EspressoIdlingResource.increment()
         val resultTvShow = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
         handler.postDelayed({
-            resultTvShow.value = ApiResponse.success(jsonHelper.loadTvShows())
+            resultTvShow.value = ApiResponse.Success(jsonHelper.loadTvShows())
             EspressoIdlingResource.decrement()
                             }, SERVICE_LATENCY_IN_MILLIS)
         return resultTvShow
@@ -61,7 +61,7 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         EspressoIdlingResource.increment()
         val resultTvShowById = MutableLiveData<ApiResponse<List<TvShowResponse>>>()
         handler.postDelayed({
-            resultTvShowById.value = ApiResponse.success(jsonHelper.loadTvShowById(tvId))
+            resultTvShowById.value = ApiResponse.Success(jsonHelper.loadTvShowById(tvId))
             EspressoIdlingResource.decrement()
         }, SERVICE_LATENCY_IN_MILLIS)
         return resultTvShowById

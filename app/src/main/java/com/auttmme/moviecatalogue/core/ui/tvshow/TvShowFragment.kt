@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.auttmme.moviecatalogue.core.data.Resource
 import com.auttmme.moviecatalogue.databinding.FragmentTvshowBinding
 import com.auttmme.moviecatalogue.core.ui.viewmodel.ViewModelFactory
 import com.auttmme.moviecatalogue.core.vo.Status
@@ -35,14 +36,14 @@ class TvShowFragment : Fragment() {
             viewModel.getAllTvShows().observe(viewLifecycleOwner, { tvShows ->
                 Log.d("Yeay", tvShows.toString())
                 if (tvShows != null) {
-                    when (tvShows.status) {
-                        Status.LOADING -> fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> {
+                    when (tvShows) {
+                        is Resource.Loading -> fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
+                        is Resource.Success -> {
                             fragmentTvShowBinding.progressBar.visibility = View.GONE
-                            tvShowAdapter.submitList(tvShows.data)
+                            tvShowAdapter.setTvShow(tvShows.data)
                             tvShowAdapter.notifyDataSetChanged()
                         }
-                        Status.ERROR -> {
+                        is Resource.Error -> {
                             fragmentTvShowBinding.progressBar.visibility = View.GONE
                             Toast.makeText(context, "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
                         }

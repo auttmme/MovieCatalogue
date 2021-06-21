@@ -52,23 +52,25 @@ class DetailMovieActivity : AppCompatActivity() {
 
             viewModel.getMovie.observe(this, { movieResource ->
                 if (movieResource != null) {
-                    when (movieResource.status) {
-                        Status.LOADING -> activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> if (movieResource.data != null) {
-                            activityDetailMovieBinding.progressBar.visibility = View.GONE
-                            populateMovie(movieResource.data)
-                        }
-                        Status.ERROR -> {
-                            activityDetailMovieBinding.progressBar.visibility = View.GONE
-                            Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+//                    when (movieResource) {
+//                        is mov -> activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
+//                        Status.SUCCESS -> if (movieResource.data != null) {
+//                            activityDetailMovieBinding.progressBar.visibility = View.GONE
+//                            populateMovie(movieResource.data)
+//                        }
+//                        Status.ERROR -> {
+//                            activityDetailMovieBinding.progressBar.visibility = View.GONE
+//                            Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+                    movieResource.data?.let { populateMovie(it) }
                 }
             })
         }
     }
 
     private fun populateMovie(movie: Movie) {
+        supportActionBar?.title = movie.movieTitle
         detailMovieBinding.textMovieTitle.text = movie.movieTitle
         detailMovieBinding.textMovieYear.text = movie.movieYear.toString()
         detailMovieBinding.textMovieGenre.text = movie.movieGenre
@@ -89,14 +91,11 @@ class DetailMovieActivity : AppCompatActivity() {
         this.menu = menu
         viewModel.getMovie.observe(this, { movie ->
             if (movie != null) {
-                when (movie.status) {
-                    Status.LOADING -> activityDetailMovieBinding.progressBar.visibility = View.VISIBLE
-                    Status.SUCCESS -> if (movie.data != null) {
+                    if (movie.data != null) {
                         activityDetailMovieBinding.progressBar.visibility = View.GONE
                         val state = movie.data.movieFavorited
                         setFavoriteState(state)
                     }
-                }
             }
         })
         return true

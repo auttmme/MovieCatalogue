@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.auttmme.moviecatalogue.R
-import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 import com.auttmme.moviecatalogue.databinding.ActivityDetailTvShowBinding
 import com.auttmme.moviecatalogue.databinding.ContentDetailTvShowBinding
 import com.auttmme.moviecatalogue.core.ui.viewmodel.ViewModelFactory
-import com.auttmme.moviecatalogue.core.vo.Status
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -51,32 +49,33 @@ class DetailTvShowActivity : AppCompatActivity() {
 
             viewModel.getTvShow.observe(this, { tvShowResource ->
                 if (tvShowResource != null) {
-                    when(tvShowResource.status) {
-                        Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> if (tvShowResource.data != null) {
-                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
-                            populateTvShow(tvShowResource.data)
-                        }
-                        Status.ERROR -> {
-                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
-                            Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+//                    when(tvShowResource.status) {
+//                        Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
+//                        Status.SUCCESS -> if (tvShowResource.data != null) {
+//                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
+//                            populateTvShow(tvShowResource.data)
+//                        }
+//                        Status.ERROR -> {
+//                            activityDetailTvShowBinding.progressBar.visibility = View.GONE
+//                            Toast.makeText(applicationContext, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+                    tvShowResource.data?.let { populateTvShow(it) }
                 }
             })
         }
     }
 
-    private fun populateTvShow(tvShowEntity: TvShowEntity) {
-        detailTvShowBinding.textTvTitle.text = tvShowEntity.tvTitle
-        detailTvShowBinding.textTvYear.text = tvShowEntity.tvYear.toString()
-        detailTvShowBinding.textTvGenre.text = tvShowEntity.tvGenre
-        detailTvShowBinding.textTvSeason.text = tvShowEntity.tvSeason.toString()
-        detailTvShowBinding.textTvEpisode.text = tvShowEntity.tvEpisode.toString()
-        detailTvShowBinding.textTvDesc.text = tvShowEntity.tvDesc
+    private fun populateTvShow(tvShow: TvShow) {
+        detailTvShowBinding.textTvTitle.text = tvShow.tvTitle
+        detailTvShowBinding.textTvYear.text = tvShow.tvYear.toString()
+        detailTvShowBinding.textTvGenre.text = tvShow.tvGenre
+        detailTvShowBinding.textTvSeason.text = tvShow.tvSeason.toString()
+        detailTvShowBinding.textTvEpisode.text = tvShow.tvEpisode.toString()
+        detailTvShowBinding.textTvDesc.text = tvShow.tvDesc
 
         Glide.with(this)
-            .load(tvShowEntity.tvPoster)
+            .load(tvShow.tvPoster)
             .transform(RoundedCorners(25))
             .apply(
                 RequestOptions.placeholderOf(R.drawable.ic_loading)
@@ -89,14 +88,11 @@ class DetailTvShowActivity : AppCompatActivity() {
         this.menu = menu
         viewModel.getTvShow.observe(this, { tvShow ->
             if (tvShow != null) {
-                when (tvShow.status) {
-                    Status.LOADING -> activityDetailTvShowBinding.progressBar.visibility = View.VISIBLE
-                    Status.SUCCESS -> if (tvShow.data != null) {
+                if (tvShow.data != null) {
                         activityDetailTvShowBinding.progressBar.visibility = View.GONE
                         val state = tvShow.data.tvFavorited
                         setFavoriteState(state)
                     }
-                }
             }
         })
         return true

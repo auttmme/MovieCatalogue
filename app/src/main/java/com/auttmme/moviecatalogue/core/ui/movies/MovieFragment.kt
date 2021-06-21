@@ -39,14 +39,14 @@ class MovieFragment : Fragment() {
             movieViewModel.getAllMovies().observe(viewLifecycleOwner, { movies ->
                 Log.d("bismillah", movies.toString())
                 if (movies != null) {
-                    when (movies.status) {
-                        Status.LOADING -> fragmentMovieBinding.progressBar.visibility = View.VISIBLE
-                        Status.SUCCESS -> {
+                    when (movies) {
+                        is Resource.Loading -> fragmentMovieBinding.progressBar.visibility = View.VISIBLE
+                        is Resource.Success -> {
                             fragmentMovieBinding.progressBar.visibility = View.GONE
                             movieAdapter.setMovie(movies.data)
 //                            movieAdapter.submitList(movies.data)
                         }
-                        Status.ERROR -> {
+                        is Resource.Error -> {
                             fragmentMovieBinding.progressBar.visibility = View.GONE
                             Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
                         }

@@ -8,32 +8,34 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.auttmme.moviecatalogue.R
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 import com.auttmme.moviecatalogue.databinding.ItemTvshowBinding
 import com.auttmme.moviecatalogue.core.ui.detail.tvShow.DetailTvShowActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
-//    private var listTvShow = ArrayList<TvShowEntity>()
+class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+    private var listTvShow = ArrayList<TvShow>()
 
-//    fun setTvShow(tvShows: List<TvShowEntity>?) {
-//        if (tvShows.isNullOrEmpty()) return
-//        this.listTvShow.clear()
-//        this.listTvShow.addAll(tvShows)
-//    }
-
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
-            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem.tvId == newItem.tvId
-            }
-
-            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem == newItem
-            }
-
-        }
+    fun setTvShow(tvShows: List<TvShow>?) {
+        if (tvShows.isNullOrEmpty()) return
+        this.listTvShow.clear()
+        this.listTvShow.addAll(tvShows)
+        notifyDataSetChanged()
     }
+
+//    companion object {
+//        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+//            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+//                return oldItem.tvId == newItem.tvId
+//            }
+//
+//            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+//                return oldItem == newItem
+//            }
+//
+//        }
+//    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -44,16 +46,14 @@ class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHol
     }
 
     override fun onBindViewHolder(holder: TvShowAdapter.TvShowViewHolder, position: Int) {
-        val tvShow = getItem(position)
-        if (tvShow != null) {
-            holder.bind(tvShow)
-        }
+        val tvShow = listTvShow[position]
+        holder.bind(tvShow)
     }
 
-//    override fun getItemCount(): Int = listTvShow.size
+    override fun getItemCount(): Int = listTvShow.size
 
     inner class TvShowViewHolder(private val binding: ItemTvshowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: TvShowEntity) {
+        fun bind(tvShow: TvShow) {
             with(binding) {
                 tvTvshowTitle.text = tvShow.tvTitle
                 tvTvshowYear.text = tvShow.tvYear.toString()
@@ -73,6 +73,6 @@ class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHol
         }
     }
 
-    fun getSwipedData(swipedPosition: Int): TvShowEntity? = getItem(swipedPosition)
+//    fun getSwipedData(swipedPosition: Int): TvShowEntity? = getItem(swipedPosition)
 
 }

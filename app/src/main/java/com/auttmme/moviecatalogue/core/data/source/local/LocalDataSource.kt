@@ -6,6 +6,7 @@ import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
 import com.auttmme.moviecatalogue.core.domain.model.Movie
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
 class LocalDataSource private constructor(private val mMovieCatalogueDao: MovieCatalogueDao) {
 
@@ -29,11 +30,11 @@ class LocalDataSource private constructor(private val mMovieCatalogueDao: MovieC
         mMovieCatalogueDao.updateMovie(movie)
     }
 
-    fun getAllTvShows(): DataSource.Factory<Int, TvShowEntity> = mMovieCatalogueDao.getTvShows()
+    fun getAllTvShows(): LiveData<List<TvShowEntity>> = mMovieCatalogueDao.getTvShows()
 
-    fun getTvShowById(tvId: Int): LiveData<TvShowEntity> = mMovieCatalogueDao.getTvShowById(tvId)
+    fun getTvShowById(tvId: Int): LiveData<TvShow> = mMovieCatalogueDao.getTvShowById(tvId)
 
-    fun getFavoriteTvShows(): DataSource.Factory<Int, TvShowEntity> = mMovieCatalogueDao.getFavoriteTvShow()
+    fun getFavoriteTvShows(): LiveData<List<TvShowEntity>> = mMovieCatalogueDao.getFavoriteTvShow()
 
     fun insertTvShows(tvShows: List<TvShowEntity>) = mMovieCatalogueDao.insertTvShows(tvShows)
 

@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.domain.model.Movie
-import com.auttmme.moviecatalogue.core.vo.Resource
+import com.auttmme.moviecatalogue.core.data.Resource
 
 class MovieViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
 

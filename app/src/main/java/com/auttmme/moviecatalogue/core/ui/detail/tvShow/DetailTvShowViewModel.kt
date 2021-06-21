@@ -6,7 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
-import com.auttmme.moviecatalogue.core.vo.Resource
+import com.auttmme.moviecatalogue.core.data.Resource
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
 class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
     val tvShowId = MutableLiveData<Int>()
@@ -15,7 +16,7 @@ class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogue
         this.tvShowId.value = tvShowId
     }
 
-    var getTvShow: LiveData<Resource<TvShowEntity>> = Transformations.switchMap(tvShowId) { mDetailTvId ->
+    var getTvShow: LiveData<Resource<TvShow>> = Transformations.switchMap(tvShowId) { mDetailTvId ->
         movieCatalogueRepository.getTvShowById(mDetailTvId)
     }
 

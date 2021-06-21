@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
-import com.auttmme.moviecatalogue.core.vo.Resource
+import com.auttmme.moviecatalogue.core.data.Resource
+import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
 class TvShowViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
 
-    fun getAllTvShows(): LiveData<Resource<PagedList<TvShowEntity>>> = movieCatalogueRepository.getAllTvShows()
+    fun getAllTvShows(): LiveData<Resource<List<TvShow>>> = movieCatalogueRepository.getAllTvShows()
 }
