@@ -3,7 +3,7 @@ package com.auttmme.moviecatalogue.core.data.source
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.auttmme.moviecatalogue.core.data.MovieCatalogueDataSource
+import com.auttmme.moviecatalogue.core.domain.repository.IMovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.NetworkBoundResource
 import com.auttmme.moviecatalogue.core.data.source.local.LocalDataSource
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
@@ -15,11 +15,11 @@ import com.auttmme.moviecatalogue.core.data.source.remote.response.TvShowRespons
 import com.auttmme.moviecatalogue.core.utils.AppExecutors
 import com.auttmme.moviecatalogue.core.vo.Resource
 
-class FakeMovieRepository constructor(
+class FakeIMovieRepository constructor(
         private val remoteDataSource: RemoteDataSource,
         private val localDataSource: LocalDataSource,
         private val appExecutors: AppExecutors) :
-        MovieCatalogueDataSource {
+    IMovieCatalogueRepository {
 
     override fun getAllMovies(): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {

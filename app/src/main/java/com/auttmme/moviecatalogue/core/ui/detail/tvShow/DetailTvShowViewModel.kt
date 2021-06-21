@@ -8,8 +8,9 @@ import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import com.auttmme.moviecatalogue.core.data.Resource
 import com.auttmme.moviecatalogue.core.domain.model.TvShow
+import com.auttmme.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
 
-class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
+class DetailTvShowViewModel(private val movieCatalogueUseCase: MovieCatalogueUseCase) : ViewModel() {
     val tvShowId = MutableLiveData<Int>()
 
     fun setSelectedTvShow(tvShowId: Int) {
@@ -17,7 +18,7 @@ class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogue
     }
 
     var getTvShow: LiveData<Resource<TvShow>> = Transformations.switchMap(tvShowId) { mDetailTvId ->
-        movieCatalogueRepository.getTvShowById(mDetailTvId)
+        movieCatalogueUseCase.getTvShowById(mDetailTvId)
     }
 
     fun setFavorite() {
@@ -25,7 +26,7 @@ class DetailTvShowViewModel(private val movieCatalogueRepository: MovieCatalogue
         if (tvShowResource != null) {
             val tvShowDetail = tvShowResource.data
             val newState = !tvShowDetail?.tvFavorited!!
-            movieCatalogueRepository.setTvShowFavorite(tvShowDetail, newState)
+            movieCatalogueUseCase.setTvShowFavorite(tvShowDetail, newState)
         }
     }
 }

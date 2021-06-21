@@ -2,8 +2,6 @@ package com.auttmme.moviecatalogue.core.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import com.auttmme.moviecatalogue.core.data.source.local.LocalDataSource
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
@@ -14,14 +12,14 @@ import com.auttmme.moviecatalogue.core.data.source.remote.response.TvShowRespons
 import com.auttmme.moviecatalogue.core.domain.model.Movie
 import com.auttmme.moviecatalogue.core.utils.AppExecutors
 import com.auttmme.moviecatalogue.core.utils.DataMapper
-import com.auttmme.moviecatalogue.core.data.Resource
 import com.auttmme.moviecatalogue.core.domain.model.TvShow
+import com.auttmme.moviecatalogue.core.domain.repository.IMovieCatalogueRepository
 
 class MovieCatalogueRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors) :
-    MovieCatalogueDataSource {
+    IMovieCatalogueRepository {
 
     companion object {
         @Volatile

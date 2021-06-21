@@ -27,7 +27,7 @@ class MovieCatalogueRepositoryTest {
     private val local = mock(LocalDataSource::class.java)
     private val appExecutors = mock(AppExecutors::class.java)
 
-    private val movieCatalogueRepository = FakeMovieRepository(remote, local, appExecutors)
+    private val movieCatalogueRepository = FakeIMovieRepository(remote, local, appExecutors)
 
     private val movieResponses = DataDummy.generateRemoteDummyMovies()
     private val movieId = movieResponses[0].movieId

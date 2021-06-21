@@ -1,15 +1,11 @@
-package com.auttmme.moviecatalogue.core.data
+package com.auttmme.moviecatalogue.core.domain.usecase
 
 import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
-import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
-import com.auttmme.moviecatalogue.core.domain.model.Movie
 import com.auttmme.moviecatalogue.core.data.Resource
+import com.auttmme.moviecatalogue.core.domain.model.Movie
 import com.auttmme.moviecatalogue.core.domain.model.TvShow
 
-interface MovieCatalogueDataSource {
-
+interface MovieCatalogueUseCase {
     fun getAllMovies(): LiveData<Resource<List<Movie>>>
 
     fun getAllTvShows(): LiveData<Resource<List<TvShow>>>

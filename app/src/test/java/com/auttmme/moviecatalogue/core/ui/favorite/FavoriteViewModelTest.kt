@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
+import com.auttmme.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import org.junit.Assert.assertEquals
@@ -27,7 +27,7 @@ class FavoriteViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var movieCatalogueRepository: MovieCatalogueRepository
+    private lateinit var movieCatalogueRepository: IMovieCatalogueRepository
 
     @Mock
     private lateinit var movieObserver: Observer<PagedList<MovieEntity>>

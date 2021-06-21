@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
-import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.domain.model.Movie
 import com.auttmme.moviecatalogue.core.data.Resource
+import com.auttmme.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
 
-class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
+class DetailMovieViewModel(private val movieCatalogueUseCase: MovieCatalogueUseCase) : ViewModel() {
     val movieId = MutableLiveData<Int>()
 
     fun setSelectedMovie(movieId: Int) {
@@ -17,7 +17,7 @@ class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueR
     }
 
     var getMovie: LiveData<Resource<Movie>> = Transformations.switchMap(movieId) { mDetailMovieId ->
-        movieCatalogueRepository.getMovieById(mDetailMovieId)
+        movieCatalogueUseCase.getMovieById(mDetailMovieId)
     }
 
     fun setFavorite() {
@@ -25,7 +25,7 @@ class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueR
         if (movieResource != null) {
             val movieDetail = movieResource.data
             val newState = !movieDetail?.movieFavorited!!
-            movieCatalogueRepository.setMovieFavorite(movieDetail, newState)
+            movieCatalogueUseCase.setMovieFavorite(movieDetail, newState)
         }
     }
 }

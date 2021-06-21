@@ -67,6 +67,7 @@ class DetailTvShowActivity : AppCompatActivity() {
     }
 
     private fun populateTvShow(tvShow: TvShow) {
+        supportActionBar?.title = tvShow.tvTitle
         detailTvShowBinding.textTvTitle.text = tvShow.tvTitle
         detailTvShowBinding.textTvYear.text = tvShow.tvYear.toString()
         detailTvShowBinding.textTvGenre.text = tvShow.tvGenre

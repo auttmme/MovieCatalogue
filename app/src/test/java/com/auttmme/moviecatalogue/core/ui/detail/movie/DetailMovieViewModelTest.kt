@@ -3,7 +3,7 @@ package com.auttmme.moviecatalogue.core.ui.detail.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.auttmme.moviecatalogue.core.data.MovieCatalogueRepository
+import com.auttmme.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.auttmme.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.auttmme.moviecatalogue.core.utils.DataDummy
 import com.auttmme.moviecatalogue.core.vo.Resource
@@ -27,7 +27,7 @@ class DetailMovieViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var movieCatalogueRepository: MovieCatalogueRepository
+    private lateinit var movieCatalogueRepository: IMovieCatalogueRepository
 
     @Mock
     private lateinit var movieObserver: Observer<Resource<MovieEntity>>
